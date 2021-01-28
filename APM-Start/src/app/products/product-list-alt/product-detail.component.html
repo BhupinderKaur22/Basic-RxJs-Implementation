@@ -1,6 +1,7 @@
 <div class="card"
-     *ngIf="product">
-  <div class="card-header">
+     *ngIf="selectedProduct$ | async as product">
+  <div class="card-header"
+     *ngIf="pageTitle$ | async as pageTitle">
     {{pageTitle}}
   </div>
 
@@ -33,7 +34,7 @@
 
     <div class="table-responsive">
       <table class="table mb-0"
-             *ngIf="productSuppliers">
+             *ngIf="selectedProductSuppliers$ | async as productSuppliers">
         <thead>
           <tr>
             <th>Supplier</th>

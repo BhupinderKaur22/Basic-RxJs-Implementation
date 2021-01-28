@@ -4,14 +4,24 @@ import { Injectable } from '@angular/core';
 import { throwError, Observable } from 'rxjs';
 
 import { ProductCategory } from './product-category';
+import { tap, catchError, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductCategoryService {
   private productCategoriesUrl = 'api/productCategories';
+  public productCategories$: Observable<ProductCategory[]>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.productCategories$ = this.http.get<ProductCategory[]>(this.productCategoriesUrl)
+      .pipe(
+        tap(data => console.log('Categories ', JSON.stringify(data))),
+        shareReplay(1),
+        catchError(this.handleError)
+      );
+  }
+   
 
   private handleError(err: any): Observable<never> {
     // in a real world app, we may send the server to some remote logging infrastructure
